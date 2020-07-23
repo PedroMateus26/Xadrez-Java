@@ -2,26 +2,18 @@ package boardgame;
 
 public class Piece {
 	
-	private Position position;
+	protected Position position;
 	private Board board;
 	
-	public Piece(Position position, Board board) {
-		this.position = null;
+	public Piece( Board board) {
 		this.board = board;
+		this.position = null;
 	}
 
-	public Position getPosition() {
-		return position;
-	}
-
-	public void setPosition(Position position) {
-		this.position = position;
-	}
 
 	protected Board getBoard() {
 		return board;
 	}
 
-	
 	
 }

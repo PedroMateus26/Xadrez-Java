@@ -34,11 +34,24 @@ public class Board {
 			throw new BoardException("A posição acessada não existe");
 		return pieces[position.getRow()][position.getColumn()];
 	}
+	
 	public void placePiece(Piece piece, Position position) {
-		if(thereIsAPiece(position))
-			throw new BoardException("Já existe uma peça nessa posição "+position);
-		pieces[position.getRow()][position.getColumn()]=piece;
-		piece.position=position;
+		if (thereIsAPiece(position)) {
+			throw new BoardException("There is already a piece on position " + position);
+		}
+		pieces[position.getRow()][position.getColumn()] = piece;
+		piece.position = position;
+	}
+	
+	public Piece removePiece(Position position) {
+		if(!positionExist(position))
+			throw new BoardException("A posição acessada não existe");
+		if(piece(position)==null)
+			return null;
+		Piece aux=piece(position);
+		aux.position=null;
+		pieces[position.getRow()][position.getColumn()]=null;
+		return aux;
 	}
 	
 	public boolean positionExist(int row, int column) {

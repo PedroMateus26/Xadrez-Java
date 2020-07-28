@@ -21,7 +21,7 @@ public class King extends ChessPiece {
 
 	@Override
 	public String toString() {
-		if (color == Color.WHITE)
+		if (color == Color.BRANCO)
 			return "Kw";
 		else
 			return "Kb";

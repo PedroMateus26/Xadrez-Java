@@ -3,9 +3,11 @@ package application;
 import java.util.InputMismatchException;
 
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.stream.Collectors;
+
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import chess.ChessMatch;
@@ -14,6 +16,10 @@ import chess.ChessPosition;
 import chess.Color;
 
 public class UI {
+
+	static int delay = 1000; // delay de 5 seg.
+	static int interval = 1000; // intervalo de 1 seg.
+	static Timer timer = new Timer();
 
 	public static ChessPosition readChessPosition(Scanner sc) {
 		try {
@@ -33,7 +39,9 @@ public class UI {
 		System.out.println();
 		System.out.println("Turno : " + chessMatch.getTurn());
 		if (!chessMatch.getCheckMate()) {
-			System.out.println("Esperando jogador: " + chessMatch.getCurrentPlayer());
+			System.out.println("Esperando jogador: " + ((chessMatch.getCurrentPlayer()==Color.BRANCO)?"BRANCO (Peças com w)":"PRETO (Peças com b)"));
+			;
+			
 			if (chessMatch.getCheck()) {
 				System.out.println("CHECK!");
 			}
@@ -67,7 +75,12 @@ public class UI {
 
 	private static void printPiece(ChessPiece piece, boolean background) {
 		if (background) {
-			System.out.print("x ");
+			if (piece != null) {
+					System.out.print("o ");
+				
+			} else {
+				System.out.print("x ");
+			}
 		} else if (piece == null) {
 			System.out.print("- ");
 		} else {
@@ -81,10 +94,10 @@ public class UI {
 				.collect(Collectors.toList());
 		List<ChessPiece> black = captured.stream().filter(x -> x.getColor() == Color.PRETO)
 				.collect(Collectors.toList());
-		System.out.println("Captured pieces:");
-		System.out.print("White: ");
+		System.out.println("Pecas capturadas:");
+		System.out.print("Branco: ");
 		System.out.println(Arrays.toString(white.toArray()));
-		System.out.print("Black: ");
+		System.out.print("Preto: ");
 		System.out.println(Arrays.toString(black.toArray()));
 
 	}

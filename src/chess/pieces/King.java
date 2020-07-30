@@ -19,13 +19,6 @@ public class King extends ChessPiece {
 		return p == null || p.getColor() != getColor();
 	}
 
-	@Override
-	public String toString() {
-		if (color == Color.BRANCO)
-			return "Kw";
-		else
-			return "Kb";
-	}
 
 	@Override
 	public boolean[][] possibleMoves() {
@@ -75,4 +68,9 @@ public class King extends ChessPiece {
 		return mat;
 	}
 
+	@Override
+	public String toString() {
+		return "K"+super.toString();
+	}
+	
 }

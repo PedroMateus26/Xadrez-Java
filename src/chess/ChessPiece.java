@@ -38,4 +38,12 @@ public abstract class ChessPiece extends Piece {
 		return p != null && p.getColor() != color;
 	}
 
+	@Override
+	public String toString () {
+		if(color == Color.BRANCO)
+			return "w";
+		else
+			return "b";
+	}
+	
 }

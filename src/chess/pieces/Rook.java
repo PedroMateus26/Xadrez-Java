@@ -12,13 +12,6 @@ public class Rook extends ChessPiece{
 		this.color=color;
 	}
 	
-	@Override
-	public String toString() {
-		if(color==Color.BRANCO)
-			return "Rw";
-		else 
-			return "Rb";
-	}
 
 	@Override
 	public boolean[][] possibleMoves() {
@@ -69,4 +62,8 @@ public class Rook extends ChessPiece{
 		return mat;
 	}
 	
+	@Override
+	public String toString() {
+		return "R"+super.toString();
+	}
 }

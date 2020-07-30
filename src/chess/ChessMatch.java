@@ -1,5 +1,6 @@
 package chess;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class ChessMatch {
 	private boolean check;
 	private boolean checkMate;
 	private ChessPiece enPassantVulnerable;
+	private ChessPiece promoted;
 
 	private List<Piece> capturedPieces = new ArrayList<>();
 	private List<Piece> piecesOnTheBoard = new ArrayList<>();
@@ -37,6 +39,10 @@ public class ChessMatch {
 		return enPassantVulnerable;
 	}
 
+	public ChessPiece getPromoted() {
+		return promoted;
+	}
+	
 	public int getTurn() {
 		return turn;
 	}
@@ -80,7 +86,14 @@ public class ChessMatch {
 			undoMove(source, target, capturedPiece);
 			throw new ChessException("Você não pode se colocar em check");
 		}
-
+		// #specialmove promotion
+				promoted = null;
+				if (movedPiece instanceof Pawn) {
+					if ((movedPiece.getColor() == Color.BRANCO && target.getRow() == 0) || (movedPiece.getColor() == Color.PRETO && target.getRow() == 7)) {
+						promoted = (ChessPiece)board.piece(target);
+						promoted = replacePromotedPiece("Q");
+					}
+				}
 		check = (testCheck(opponent(currentPlayer))) ? true : false;
 		if (testCheckMate(opponent(currentPlayer))) {
 			checkMate = true;
@@ -141,6 +154,32 @@ public class ChessMatch {
 					}
 				}
 		return capturedPiece;
+	}
+	
+	public ChessPiece replacePromotedPiece(String type) {
+		if (promoted == null) {
+			throw new IllegalStateException("Não há pela para ser promovida");
+		}
+		if (!type.equals("B") && !type.equals("N") && !type.equals("R") & !type.equals("Q")) {
+			throw new InvalidParameterException("Tipo invalido para promoção");
+		}
+
+		Position pos = promoted.getChessPosition().toPosition();
+		Piece p = board.removePiece(pos);
+		piecesOnTheBoard.remove(p);
+
+		ChessPiece newPiece = newPiece(type, promoted.getColor());
+		board.placePiece(newPiece, pos);
+		piecesOnTheBoard.add(newPiece);
+
+		return newPiece;
+	}
+
+	private ChessPiece newPiece(String type, Color color) {
+		if (type.equals("B")) return new Bispo(board, color);
+		if (type.equals("N")) return new Knight(board, color);
+		if (type.equals("Q")) return new Queen(board, color);
+		return new Rook(board, color);
 	}
 
 	private void undoMove(Position source, Position target, Piece capturedPiece) {

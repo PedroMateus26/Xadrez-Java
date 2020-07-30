@@ -1,13 +1,9 @@
 package application;
 
-
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
-
-
 
 import chess.ChessException;
 import chess.ChessMatch;
@@ -24,7 +20,7 @@ public class Program {
 
 		while (!chessMatch.getCheckMate()) {
 			try {
-				UI.printMatch(chessMatch,captured);
+				UI.printMatch(chessMatch, captured);
 				System.out.println();
 				System.out.print("Posição inicial: ");
 				ChessPosition source = UI.readChessPosition(sc);
@@ -38,9 +34,14 @@ public class Program {
 				ChessPosition target = UI.readChessPosition(sc);
 
 				ChessPiece capturedPiece = chessMatch.performChessMove(source, target);
-				if(capturedPiece!=null)
+				if (capturedPiece != null)
 					captured.add(capturedPiece);
-				} catch (ChessException e) {
+				if (chessMatch.getPromoted() != null) {
+					System.out.print("Entre com a letra da peça a ser promovida (B/N/R/Q): ");
+					String type = sc.nextLine();
+					chessMatch.replacePromotedPiece(type);
+				}
+			} catch (ChessException e) {
 				System.out.println(e.getMessage());
 				sc.nextLine();
 			} catch (InputMismatchException e) {

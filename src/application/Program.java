@@ -37,8 +37,13 @@ public class Program {
 				if (capturedPiece != null)
 					captured.add(capturedPiece);
 				if (chessMatch.getPromoted() != null) {
-					System.out.print("Entre com a letra da peça a ser promovida (B/N/R/Q): ");
-					String type = sc.nextLine();
+					System.out.print("Peão promovido, entre com a letra da peça que substituirá o peão: (B/N/R/Q): ");
+					String type = sc.nextLine().toUpperCase();
+					while(!type.equals("B") && !type.equals("N") && !type.equals("R") & !type.equals("Q")) {
+						System.out.print("Letra inválida! Entre com a letra da peça que substituirá o peão: (B/N/R/Q): ");
+						 type = sc.nextLine().toUpperCase();
+					}
+						
 					chessMatch.replacePromotedPiece(type);
 				}
 			} catch (ChessException e) {
@@ -48,8 +53,5 @@ public class Program {
 				System.out.println(e.getMessage());
 				sc.nextLine();
 			}
-		}
-		UI.printMatch(chessMatch, captured);
-		System.out.println("Fim de jogo!");
-	}
-}
+		}UI.printMatch(chessMatch,captured);System.out.println("Fim de jogo!");
+}}
